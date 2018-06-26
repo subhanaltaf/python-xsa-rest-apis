@@ -1,0 +1,20 @@
+{
+    "format_version": 1,
+    "imports": [
+        {
+            "target_table": "Product.Products",
+            "source_data": {
+                "data_type": "CSV",
+                "file_name": "products_short.csv",
+                "has_header": true
+            },
+            "import_settings": {
+                "import_columns": [
+                    "PRODUCTID",
+                    "CATEGORY",
+                    "PRICE"
+                ]
+            }
+        }
+    ]
+}

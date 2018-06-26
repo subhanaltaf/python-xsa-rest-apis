@@ -1,0 +1,31 @@
+---
+applications:
+- name: core-db
+  path: ./core-db/
+  no-route: true
+  services:
+   - hdi-db
+  env:
+    TARGET_CONAINER: hdi-db
+
+- name: core-py
+  host: core-py
+  path: ./core-py/
+  command: python server.py
+  services:
+   - myuaa
+   - hdi-db
+   
+- name: web
+  path: ./app-router/
+  env:
+    destinations: >
+      [
+        {
+          "name": "core-py",
+          "url": "https://core-py.hanapm.local.com:30033",
+          "forwardAuthToken": true
+        }
+      ]
+  services:
+   - myuaa

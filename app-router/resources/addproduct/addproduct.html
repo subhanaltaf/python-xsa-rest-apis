@@ -1,0 +1,21 @@
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../common/csrf.js"></script>
+    <script src="addproduct.js"></script>
+    
+    <div id="form">
+    <h1>Add New Product</h1>
+        <form action="javascript:callAddFunc()">
+            Product ID:<br>
+            <input type="text" name="productID" required />
+            <br>
+            Category:<br>
+            <input type="text" name="category" />
+            <br>
+            Price:<br>
+            <input type="text" name="price" />
+            <br><br>
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+</body>
