@@ -4,9 +4,9 @@ applications:
   path: ./core-db/
   no-route: true
   services:
-   - hdi-db
+   - hdi-test
   env:
-    TARGET_CONAINER: hdi-db
+    TARGET_CONAINER: hdi-test
 
 - name: core-py
   host: core-py
@@ -14,7 +14,7 @@ applications:
   command: python server.py
   services:
    - myuaa
-   - hdi-db
+   - hdi-test
    
 - name: web
   path: ./app-router/

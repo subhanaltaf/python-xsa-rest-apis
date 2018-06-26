@@ -1,7 +1,8 @@
 {
     "name": "deploy",
     "dependencies": {
-        "@sap/hdi-deploy": "3.5.1"
+        "@sap/hdi-deploy": "3.5.1",
+        "@sap/cds": "",
     },
     "scripts": {
         "start": "node node_modules/@sap/hdi-deploy/deploy.js"
