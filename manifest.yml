@@ -4,9 +4,9 @@ applications:
   path: ./core-db/
   no-route: true
   services:
-   - hdi-test
+   - hdi-db
   env:
-    TARGET_CONAINER: hdi-test
+    TARGET_CONAINER: hdi-db
 
 - name: core-py
   host: core-py

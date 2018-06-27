@@ -24,7 +24,7 @@ logger = logging.getLogger('route.logger')
 app_port = int(os.environ.get('PORT', 3000))
 
 #get env variables for bound services
-hana = env.get_service(name='hdi-test')
+hana = env.get_service(name='hdi-db')
 uaa_service = env.get_service(name='myuaa').credentials
 
 #used to establish connection with HANA DB
@@ -66,7 +66,7 @@ def hello():
     logger.info('Authorization successful') if checkAuth(request.headers) else abort(403)
 
     #establish db connection
-    conn = connectDB('hdi-test')
+    conn = connectDB('hdi-db')
     logger.info('Database connection successful: ' + str(conn.isconnected()))
                         
     cursor = conn.cursor()
@@ -90,7 +90,7 @@ def viewProduct():
     logger.info('Authorization successful') if checkAuth(request.headers) else abort(403)
 
     #establish db connection
-    conn = connectDB('hdi-test')
+    conn = connectDB('hdi-db')
     logger.info('Database connection successful: ' + str(conn.isconnected()))
 
     cursor = conn.cursor()
@@ -135,7 +135,7 @@ def addProduct():
     logger.info('Authorization successful') if checkAuth(request.headers) else abort(403)
 
     #establish db connection
-    conn = connectDB('hdi-test')
+    conn = connectDB('hdi-db')
     logger.info('Database connection successful: ' + str(conn.isconnected()))
 
     cursor = conn.cursor()
@@ -155,7 +155,7 @@ def changePrice():
     logger.info('Authorization successful') if checkAuth(request.headers) else abort(403)
 
     #establish db connection
-    conn = connectDB('hdi-test')
+    conn = connectDB('hdi-db')
     logger.info('Database connection successful: ' + str(conn.isconnected()))
 
     cursor = conn.cursor()
@@ -173,7 +173,7 @@ def deleteProduct():
     logger.info('Authorization successful') if checkAuth(request.headers) else abort(403)
 
     #establish db connection
-    conn = connectDB('hdi-test')
+    conn = connectDB('hdi-db')
     logger.info('Database connection successful: ' + str(conn.isconnected()))
 
     cursor = conn.cursor()
