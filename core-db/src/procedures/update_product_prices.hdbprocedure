@@ -1,7 +1,7 @@
 PROCEDURE "update_product_prices" (
         in im_productID nvarchar(10),
 	      in im_newPrice decimal(15,2),
-        out ex_products "Product.Products" )
+        out ex_message nvarchar(200) )
    LANGUAGE SQLSCRIPT
    SQL SECURITY INVOKER
    --DEFAULT SCHEMA <default_schema_name>
@@ -14,6 +14,6 @@ BEGIN
   UPDATE "Product.Products" 
         SET PRICE = im_newPrice where PRODUCTID = im_productID;
 
- ex_products = 'Price for product' || :im_productID || ' has been changed to ' || :im_newPrice;
+ ex_message := 'Price for product' || :im_productID || ' has been changed to ' || :im_newPrice;
    
 END
