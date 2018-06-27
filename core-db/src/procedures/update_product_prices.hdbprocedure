@@ -14,6 +14,6 @@ BEGIN
   UPDATE "Product.Products" 
         SET PRICE = im_newPrice where PRODUCTID = im_productID;
 
- ex_products = 'Price for product' || :im_productID || ' has been changed to ' || :im_newPrice
+ ex_products = 'Price for product' || :im_productID || ' has been changed to ' || :im_newPrice;
    
 END
