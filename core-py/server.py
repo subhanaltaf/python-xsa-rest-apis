@@ -12,8 +12,6 @@ import json
 from flask import make_response
 from flask import jsonify
 
-import pdb
-
 #create instance of flask app
 app = Flask(__name__)
 env = AppEnv()
@@ -74,15 +72,12 @@ def hello():
     cursor = conn.cursor()
     
     cursor.execute('SELECT CURRENT_USER FROM DUMMY')
-    pdb.set_trace()     ##
     techUser = cursor.fetchone()['CURRENT_USER']
     cursor.execute('SELECT SESSION_CONTEXT(\'APPLICATIONUSER\') "APPLICATION_USER" FROM "DUMMY"')
     appUser = cursor.fetchone()['APPLICATION_USER']
     
     #html output
     output = '<h1>Welcome to SAP HANA!</h1><p>Technical User: %s</p><p>Application User: %s</p>' % (techUser, appUser)
-    logger.info(output)     ##
-    pdb.set_trace()
 
     cursor.close()
     conn.close()
