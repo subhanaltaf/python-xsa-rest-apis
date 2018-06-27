@@ -2,7 +2,11 @@
     "name": "deploy",
     "dependencies": {
         "@sap/hdi-deploy": "3.5.1",
-        "@sap/cds": "",
+        "@sap/cds": "2.3.2",
+        "@sap/hdbext": "4.7.2",
+        "@sap/xsenv": "1.2.9",
+        "@sap/xssec": "2.1.12",
+        "@sap/hdi": "2.0.3"
     },
     "scripts": {
         "start": "node node_modules/@sap/hdi-deploy/deploy.js"
