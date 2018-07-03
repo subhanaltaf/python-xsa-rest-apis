@@ -39,6 +39,7 @@ def connectDB(serviceName):
 
 #used to check if user is authorized
 def checkAuth(header):
+    #logger.info(str(request.headers['authorization']))
     if 'authorization' not in request.headers:
         return False
     
@@ -49,16 +50,6 @@ def checkAuth(header):
         return False
 
     return True
-
-#used to read incoming POST, PUT, DELETE request args
-def getRequestParams(data):
-    params = {}
-    req = data.decode('utf-8')[1:-1].split(',')
-    for param in req:
-        temp = param.split(':')
-        params[temp[0][1:-1]] = temp[1].strip()[1:-1]
-
-    return params
 
 @app.route('/')
 def hello():
@@ -100,20 +91,23 @@ def viewProduct():
         #check if user has provided number of results or category
         if 'category' in request.args:
             #if category is provided, query all products from category
-            categories = request.args['category'].split(',')
+            params = request.args['category'].split(',')
             query = 'SELECT * FROM "Product.Products" WHERE '
-            for item in categories:
-                query += "CATEGORY='" + item + "' OR "
+            for item in params:
+                query += "CATEGORY=? OR "
             query = query[:-3]
+        
         #if number is provided, query that number of results
         elif 'number' in request.args:
             if (request.args['number'] == 'all'):
                 query = 'SELECT * FROM "MDViews.ProductView"'
+                params = None
             else:
-                query = 'SELECT * FROM "MDViews.ProductView" LIMIT ' + request.args['number']
+                query = 'SELECT * FROM "MDViews.ProductView" LIMIT ?'
+                params = request.args['number']
 
         logger.info(query)      #log query for debugging
-        cursor.execute(query)
+        cursor.execute(query, params)
 
         #format results in to a list of JSON objects
         results = []
@@ -127,63 +121,7 @@ def viewProduct():
 
     #if no parameters specified
     else:
-        return make_response(jsonify({"Error": "No category specified."}), 404)
-
-@app.route('/addProduct', methods=['POST'])
-def addProduct():
-    #authorize user
-    logger.info('Authorization successful') if checkAuth(request.headers) else abort(403)
-
-    #establish db connection
-    conn = connectDB('hdi-db')
-    logger.info('Database connection successful: ' + str(conn.isconnected()))
-
-    cursor = conn.cursor()
-
-    params = getRequestParams(request.data)
-
-    in_params = (params['productID'], params['category'], float(params['price']), None)
-    output = cursor.callproc('"insert_product_data"', in_params)
+        return make_response(jsonify({"Error":, "No category specified."}), 404)
     
-    cursor.close()
-
-    return str(output)
-
-@app.route('/changePrice', methods=['PUT'])
-def changePrice():
-    #authorize user
-    logger.info('Authorization successful') if checkAuth(request.headers) else abort(403)
-
-    #establish db connection
-    conn = connectDB('hdi-db')
-    logger.info('Database connection successful: ' + str(conn.isconnected()))
-
-    cursor = conn.cursor()
-    params = getRequestParams(request.data)
-
-    in_params = (params['productID'], float(params['newPrice']), None)
-    output = cursor.callproc('"update_product_prices"', in_params)
-
-    cursor.close()
-    return str(output)
-
-@app.route('/deleteProduct', methods=['DELETE'])
-def deleteProduct():
-    #authorize user
-    logger.info('Authorization successful') if checkAuth(request.headers) else abort(403)
-
-    #establish db connection
-    conn = connectDB('hdi-db')
-    logger.info('Database connection successful: ' + str(conn.isconnected()))
-
-    cursor = conn.cursor()
-    params = getRequestParams(request.data)
-    sql_query = 'DELETE FROM "Product.Products" WHERE PRODUCTID = ' + params['productID'] + ';'
-    
-    logger.info(sql_query)
-    cursor.execute(sql_query)
-    
-    return 'Product ' + params['productID'] + ' has been deleted.'
-
 if __name__ == '__main__':
     app.run(port=app_port)
