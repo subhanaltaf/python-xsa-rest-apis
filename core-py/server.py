@@ -44,7 +44,7 @@ def checkAuth(header):
     
     access_token = header.get('authorization')[7:]
     security_context = xssec.create_security_context(access_token, uaa_service)
-    isAuthorized = security_context.check_scope('openid')
+    isAuthorized = security_context.check_scope('openid') or security_context.check_scope('uaa.resource')
     if not isAuthorized:
         return False
 
