@@ -100,20 +100,22 @@ def viewProduct():
         #check if user has provided number of results or category
         if 'category' in request.args:
             #if category is provided, query all products from category
-            categories = request.args['category'].split(',')
+            params = request.args['category'].split(',')
             query = 'SELECT * FROM "Product.Products" WHERE '
-            for item in categories:
-                query += "CATEGORY='" + item + "' OR "
+            for item in params:
+                query += "CATEGORY=? OR "
             query = query[:-3]
+        
         #if number is provided, query that number of results
         elif 'number' in request.args:
             if (request.args['number'] == 'all'):
                 query = 'SELECT * FROM "MDViews.ProductView"'
+                params = None
             else:
-                query = 'SELECT * FROM "MDViews.ProductView" LIMIT ' + request.args['number']
+                query = 'SELECT * FROM "MDViews.ProductView" LIMIT ?'
+                params = request.args['number']
 
-        logger.info(query)      #log query for debugging
-        cursor.execute(query)
+        cursor.execute(query, params)
 
         #format results in to a list of JSON objects
         results = []
